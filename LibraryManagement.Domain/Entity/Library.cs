@@ -14,6 +14,11 @@ public class Library
         return bookDB.Where(item => item.Value > 0)
             .ToDictionary(item => item.Key, item => item.Value);
     }
+    
+    public int GetBookQuantity(Book book)
+    {
+        return bookDB.Where(item => item.Key == book).Select(item=>item.Value).FirstOrDefault();
+    }
 
     public void RemoveBookFromInventory(Book book)
     {

@@ -104,13 +104,34 @@ public class LibraryServiceTest
         var user = new User();
         var bookInventory = new Dictionary<Book, int>()
         {
-            {firstBook,1},
+            {firstBook,2},
         };
         libraryRepository.Setup(x => x.GetBookInventory()).Returns(bookInventory);
         LibraryService libraryService = new LibraryService(libraryRepository.Object);
         
         libraryService.BorrowBook(firstBook,user);
         
-        libraryService.GetBooks().Should().BeEmpty();
+        libraryService.GetBookQuantity(firstBook).Should().Be(1);
     }
+    
+    [Fact]
+    public void ShouldNotBeAbleToBorrowTheSameBookTwice()
+    {
+        var libraryRepository = new Mock<ILibraryRepository>();
+        var firstBook = new Book("123", "2 States", "Chetan Bhagat");
+        var user = new User();
+        var bookInventory = new Dictionary<Book, int>()
+        {
+            {firstBook,2},
+        };
+        libraryRepository.Setup(x => x.GetBookInventory()).Returns(bookInventory);
+        LibraryService libraryService = new LibraryService(libraryRepository.Object);
+        
+        libraryService.BorrowBook(firstBook,user);
+        
+        Action action = () =>libraryService.BorrowBook(firstBook, user);
+
+        action.Should().Throw<UserNotEligibleToBorrowException>().WithMessage("Only 1 copy of a book can be borrowed at a time");
+    }
+    
 }

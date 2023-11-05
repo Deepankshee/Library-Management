@@ -13,4 +13,9 @@ public class User
     {
         return _borrowedBooks.Count == NoOfBooksUserCanBorrowAtAtime;
     }
+    
+    public bool IsBookAlreadyBorrowed(Book book)
+    {
+        return _borrowedBooks.Any(item => item == book);
+    }
 }
