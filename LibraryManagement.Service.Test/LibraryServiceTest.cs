@@ -134,4 +134,26 @@ public class LibraryServiceTest
         action.Should().Throw<UserNotEligibleToBorrowException>().WithMessage("Only 1 copy of a book can be borrowed at a time");
     }
     
+    [Fact]
+    public void ShouldBeAbleToReturnTheBookAndUpdateTheBookInventory()
+    {
+        var libraryRepository = new Mock<ILibraryRepository>();
+        var firstBook = new Book("123", "2 States", "Chetan Bhagat");
+        var secondBook =new Book("1234", "Robin Sharma", "The 5 AM Club");
+        var user = new User();
+        var bookInventory = new Dictionary<Book, int>()
+        {
+            {firstBook,2},
+            {secondBook,2}
+        };
+        libraryRepository.Setup(x => x.GetBookInventory()).Returns(bookInventory);
+        LibraryService libraryService = new LibraryService(libraryRepository.Object);
+        
+        libraryService.BorrowBook(firstBook,user);
+        libraryService.BorrowBook(secondBook,user);
+        libraryService.ReturnBook(firstBook,user);
+
+        libraryService.GetBookQuantity(firstBook).Should().Be(2);
+    }
+    
 }

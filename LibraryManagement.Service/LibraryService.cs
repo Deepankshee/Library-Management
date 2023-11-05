@@ -35,4 +35,10 @@ public class LibraryService
       user.BorrowBook(book);
       _library.RemoveBookFromInventory(book);
    }
+   
+   public void ReturnBook(Book book, User user)
+   {
+      user.ReturnBook(book);
+      _library.AddBookToInventory(book);
+   }
 }

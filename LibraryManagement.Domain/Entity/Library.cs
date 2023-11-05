@@ -29,4 +29,9 @@ public class Library
     {
         return bookDB.Any(item => item.Key == book && item.Value > 0);
     }
+
+    public void AddBookToInventory(Book book)
+    {
+        bookDB[book] += 1;
+    }
 }

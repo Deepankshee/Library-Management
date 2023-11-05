@@ -18,4 +18,9 @@ public class User
     {
         return _borrowedBooks.Any(item => item == book);
     }
+
+    public void ReturnBook(Book book)
+    {
+        _borrowedBooks.Remove(book);
+    }
 }
