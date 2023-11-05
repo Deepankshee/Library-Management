@@ -1,4 +1,4 @@
-namespace LibraryManagement.Service.Exceptions;
+namespace LibraryManagement.Domain.Exceptions;
 
 public class UserNotEligibleToBorrowException : Exception
 {
